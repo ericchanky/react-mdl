@@ -34,7 +34,7 @@ class Table extends React.Component {
 
     render() {
         const { className, columns, shadow, children,
-            rowKeyColumn, rows, data, ...otherProps } = this.props;
+            rowKeyColumn, rows, data, selectedRows, ...otherProps } = this.props;
         const realRows = rows || data;
 
         const hasShadow = typeof shadow !== 'undefined';
@@ -66,12 +66,17 @@ class Table extends React.Component {
                 </thead>
                 <tbody>
                     {realRows.map((row, idx) => {
-                        const { className: mdlRowPropsClassName, ...remainingMdlRowProps } = row.mdlRowProps || {};
+                        const { className: mdlRowPropsClassName, onClick: mdlRowPropsOnClick, ...remainingMdlRowProps } = row.mdlRowProps || {};
 
                         return (
                             <tr
                                 key={row[rowKeyColumn] || row.key || idx}
                                 className={classNames(row.className, mdlRowPropsClassName)}
+                                onClick={() => {
+                                    if (typeof mdlRowPropsOnClick !== 'undefined') {
+                                        mdlRowPropsOnClick(row[rowKeyColumn] || row.key || idx)
+                                    }
+                                }}
                                 {...remainingMdlRowProps}
                             >
                                 {columnChildren.map((child) => this.renderCell(child.props, row, idx))}

@@ -71,6 +71,7 @@ export default Component => {
         }
 
         handleChangeHeaderCheckbox(e) {
+            e.stopPropagation();
             const { rowKeyColumn, rows, data } = this.props;
             const selected = e.target.checked;
             const selectedRows = selected
